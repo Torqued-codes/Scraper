@@ -15,12 +15,15 @@ class StartupScraper:
             print(f"Error fetching page: {e}")
             return None
 
-    def parse_startups(self, soup):
-        # REPLACE these tags with the actual HTML tags from your target site
-        startups = []
-        cards = soup.find_all('div', class_='listing-item') 
-        for card in cards:
-            name = card.find('h3').text.strip() if card.find('h3') else "N/A"
-            industry = card.find('p', class_='industry').text.strip() if card.find('p', class_='industry') else "N/A"
-            startups.append({'Company': name, 'Industry': industry})
-        return startups
+    def parse_books(self, soup):
+        books = []
+        
+        items = soup.find_all('article', class_='product_pod')
+        
+        for item in items:
+            # Extracting specific data points
+            title = item.h3.a['title']
+            price = item.find('p', class_='price_color').text
+            books.append({'Title': title, 'Price': price})
+            
+        return books
